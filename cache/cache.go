@@ -11,7 +11,7 @@ type Cache struct {
 	data map[string][]byte
 }
 
-func NewCache() *Cache {
+func New() *Cache {
 	return &Cache{
 		data: make(map[string][]byte),
 	}
