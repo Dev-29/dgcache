@@ -2,6 +2,7 @@ package cache
 
 import (
 	"fmt"
+	"log"
 	"sync"
 	"time"
 )
@@ -52,12 +53,13 @@ func (c *Cache) Set(key, value []byte, ttl time.Duration) error {
 	c.lock.Lock()
 	defer c.lock.Unlock()
 
+	c.data[string(key)] = value
+	log.Printf("SET %s to %s\n", string(key), string(value))
+
 	go func() {
 		<-time.After(ttl)
 		delete(c.data, string(key))
 	}()
-
-	c.data[string(key)] = value
 
 	return nil
 }

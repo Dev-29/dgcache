@@ -85,9 +85,19 @@ func (s *Server) handleSetCmd(conn net.Conn, msg *Message) error {
 	if err := s.cache.Set(msg.Key, msg.Value, msg.TTL); err != nil {
 		return err
 	}
+
+	// goroutine for sendToFollowers()
+	go func() {
+		err := s.sendToFollowers(context.TODO(), msg)
+		if err != nil {
+			return
+		}
+	}()
+
 	return nil
 }
 
-func (s *Server) sendToFollowers(ctx context.Context) error {
+// Distribute cache to follower server nodes.
+func (s *Server) sendToFollowers(ctx context.Context, msg *Message) error {
 	return nil
 }

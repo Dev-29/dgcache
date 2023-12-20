@@ -20,7 +20,10 @@ func main() {
 			log.Fatal(err)
 		}
 
-		conn.Write([]byte("SET Foo Bar 2500"))
+		_, err = conn.Write([]byte("SET Foo Bar 2500"))
+		if err != nil {
+			return
+		}
 	}()
 
 	server := NewServer(opts, cache.New())
