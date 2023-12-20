@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/Dev-29/dgcache/cache"
 	"log"
@@ -81,7 +82,12 @@ func (s *Server) handleCommand(conn net.Conn, rawCmd []byte) {
 }
 
 func (s *Server) handleSetCmd(conn net.Conn, msg *Message) error {
-	fmt.Println("handling the SET command: ", msg)
+	if err := s.cache.Set(msg.Key, msg.Value, msg.TTL); err != nil {
+		return err
+	}
+	return nil
+}
 
+func (s *Server) sendToFollowers(ctx context.Context) error {
 	return nil
 }
